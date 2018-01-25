@@ -4,10 +4,12 @@ import styles from './Input.css'
 
 const input = (props) => {
   let inputElement = null;
+  let validationErrorMessage = null;
   const inputClasses = [styles.InputElement]
 
   if (props.invalid && props.shouldValidate && props.touched) {
     inputClasses.push(styles.Invalid);
+    validationErrorMessage = <p className={styles.ValidationErrorMessage}>{props.errorMessage}</p>
   }
 
   switch (props.elementType) {
@@ -50,6 +52,7 @@ const input = (props) => {
     <div className={styles.Input}>
       <label className={styles.Label}>{props.label}</label>
       {inputElement}
+      {validationErrorMessage}
     </div>
   );
 };
