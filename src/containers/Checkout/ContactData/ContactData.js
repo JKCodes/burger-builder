@@ -8,7 +8,7 @@ import styles from './ContactData.css';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../../store/actions';
-import { updateObject } from '../../../shared/utility';
+import { updateObject, checkValidity } from '../../../shared/utility';
 
 class ContactData extends Component {
   state = {
@@ -118,7 +118,7 @@ class ContactData extends Component {
     
     const updatedFormElement = updateObject(this.state.orderForm[inputIdentifier], { 
       value: event.target.value,
-      valid: this.checkValidity(event.target.value, this.state.orderForm[inputIdentifier].validation),
+      valid: checkValidity(event.target.value, this.state.orderForm[inputIdentifier].validation),
       touched: true
     });
     
@@ -131,37 +131,6 @@ class ContactData extends Component {
       formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
     }
     this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
-  }
-
-  checkValidity = (value, rules) => {
-    let isValid = true;
-    if (!rules) {
-        return true;
-    }
-    
-    if (rules.required) {
-        isValid = value.trim() !== '' && isValid;
-    }
-
-    if (rules.minLength) {
-        isValid = value.length >= rules.minLength && isValid
-    }
-
-    if (rules.maxLength) {
-        isValid = value.length <= rules.maxLength && isValid
-    }
-
-    if (rules.isEmail) {
-        const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-        isValid = pattern.test(value) && isValid
-    }
-
-    if (rules.isNumeric) {
-        const pattern = /^\d+$/;
-        isValid = pattern.test(value) && isValid
-    }
-
-    return isValid;
   }
 
   render() {
